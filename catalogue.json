@@ -220,12 +220,12 @@
   "assistant": {
     "nom": "Vega",
     "role": "Conseillere du comptoir",
-    "accueil": "Bonjour. Je tiens l'inventaire du comptoir depuis onze cycles. Que cherchez-vous ?",
+    "accueil": "Bonjour. Le Quartier-Maitre tient l'inventaire, Expert Galaxy connait l'histoire de la Bordure. Que cherchez-vous ?",
     "suggestions": [
-      "Une lame pour debuter l'entrainement ?",
-      "Que conseillez-vous a moins de 100 credits ?",
-      "Qu'est-ce qui est en rupture au comptoir ?",
-      "Un cadeau pour un pilote en fin de cycle ?"
+      "Combien de produits vendus ?",
+      "De quoi manque-t-on, et ou ?",
+      "Qui sont les Veilleurs ?",
+      "Qu'est-ce que la Spirale d'Aurore ?"
     ]
   }
 }

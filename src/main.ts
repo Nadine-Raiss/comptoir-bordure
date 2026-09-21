@@ -30,9 +30,9 @@ el('heros-accroche').textContent = boutique.enseigne;
 el('heros-livraison').textContent =
   `Livraison offerte des ${formaterPrix(boutique.livraison_gratuite_des)} vers les quatre bases.`;
 el('conseil-intro').textContent =
-  `Trois sources, une seule interface. Le Quartier-Maitre interroge la base de ` +
-  `donnees Fabric, le Comptoir lit le catalogue local, Expert Galaxy repond sur ` +
-  `l'histoire de la Bordure.`;
+  `Deux agents, une seule interface. Le Quartier-Maitre interroge la base de ` +
+  `donnees Fabric pour les ventes et les stocks ; Expert Galaxy repond sur ` +
+  `l'histoire de la Bordure. L'interface ignore lequel des deux repond.`;
 el('pied-nom').textContent = boutique.nom;
 el('pied-bases').textContent = boutique.bases_desservies.join(' · ');
 
@@ -202,7 +202,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-source]').forEach((bouton) =
     });
     const source = choisirSource(bouton.dataset.source ?? 'quartier');
     majAide();
-    void ajouterMessage(`Vous parlez maintenant a : ${source.nom}.`, 'Comptoir');
+    void ajouterMessage(`Vous interrogez maintenant : ${source.nom}.`, 'Comptoir');
   });
 });
 
@@ -222,11 +222,9 @@ async function poser(): Promise<void> {
   const attente = document.createElement('p');
   attente.className = 'attente-reponse';
   attente.textContent =
-    source.nom === 'Comptoir'
-      ? "Consultation de l'inventaire…"
-      : source.nom === 'Quartier-Maitre'
-        ? 'Le quartier-maitre interroge la base…'
-        : "L'archiviste consulte les archives…";
+    source.nom === 'Quartier-Maitre'
+      ? 'Le quartier-maitre interroge la base…'
+      : "L'archiviste consulte les archives…";
   journal.append(attente);
   journal.scrollTop = journal.scrollHeight;
 
