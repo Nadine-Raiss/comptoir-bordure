@@ -3,60 +3,93 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comptoir de la Bordure</title>
-    <meta name="description" content="Comptoir de la Bordure — livres et equipement pour les mondes eloignes." />
+    <title>Comptoir de la Bordure — livres et equipement pour les mondes eloignes</title>
+    <meta
+      name="description"
+      content="Comptoir de la Bordure : ouvrages, lames d'energie et reliques, expedies vers les quatre bases."
+    />
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <div class="fond" id="fond" aria-hidden="true"></div>
+    <div class="fond-horizon" id="fond"></div>
 
     <header class="entete">
-      <div class="entete__contenu">
-        <p class="entete__enseigne">Comptoir de la Bordure</p>
-        <h1 class="entete__titre">Le catalogue de l'avant-poste</h1>
-        <p class="entete__baseline">Lames, ouvrages et reliques pour les mondes sans loi</p>
+      <div class="entete__marque">
+        <p class="enseigne" id="enseigne"></p>
+        <p class="baseline" id="baseline"></p>
       </div>
+      <p class="entete__bases" id="bases"></p>
     </header>
 
-    <main class="page">
-      <section class="filtres" aria-label="Filtrer le catalogue">
-        <div class="filtres__recherche">
-          <label for="recherche">Rechercher un produit</label>
-          <input type="search" id="recherche" name="recherche" placeholder="Titre, auteur, etiquette..." autocomplete="off" />
+    <main>
+      <section class="heros">
+        <div class="heros__texte">
+          <h1>Equipez votre prochaine traversee.</h1>
+          <p id="heros-accroche"></p>
+          <p class="heros__livraison" id="heros-livraison"></p>
         </div>
-        <div class="filtres__rayons" id="filtres-rayons" role="group" aria-label="Filtrer par rayon"></div>
-        <div class="filtres__tri">
-          <label for="tri">Trier par</label>
-          <select id="tri">
-            <option value="pertinence">Pertinence</option>
-            <option value="prix-asc">Prix croissant</option>
-            <option value="prix-desc">Prix decroissant</option>
-            <option value="note">Meilleure note</option>
-          </select>
-        </div>
-        <p class="filtres__resultats" id="resultats" role="status" aria-live="polite"></p>
+        <div class="heros__scene" id="heros-scene"></div>
       </section>
 
-      <section class="grille" id="grille" aria-label="Produits du catalogue"></section>
+      <section class="catalogue" aria-labelledby="titre-catalogue">
+        <div class="catalogue__entete">
+          <h2 id="titre-catalogue">Le catalogue</h2>
+          <p class="compteur" id="compteur" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="filtres">
+          <div class="filtres__rayons" id="filtres-rayons" role="group" aria-label="Filtrer par rayon"></div>
+          <label class="bascule">
+            <input type="checkbox" id="filtre-dispo" />
+            <span>Seulement ce qui est disponible</span>
+          </label>
+        </div>
+
+        <div class="grille-produits" id="grille"></div>
+      </section>
+
+      <section class="conseil" aria-labelledby="titre-conseil">
+        <div class="conseil__presentation">
+          <h2 id="titre-conseil">Demandez conseil</h2>
+          <p id="conseil-intro"></p>
+          <div class="conseil__scene" id="conseil-scene"></div>
+        </div>
+
+        <div class="borne">
+          <div class="borne__sources" role="radiogroup" aria-label="Choisir la source de reponse">
+            <button type="button" class="source source--active" data-source="comptoir" role="radio" aria-checked="true">
+              Comptoir
+            </button>
+            <button type="button" class="source" data-source="galaxy" role="radio" aria-checked="false">
+              Expert Galaxy
+            </button>
+          </div>
+          <p class="borne__aide" id="borne-aide"></p>
+
+          <div class="journal" id="journal" role="log" aria-live="polite"></div>
+
+          <div class="suggestions" id="suggestions"></div>
+
+          <form class="saisie" id="saisie">
+            <label for="question">Votre demande</label>
+            <div class="saisie__ligne">
+              <input
+                type="text"
+                id="question"
+                name="question"
+                autocomplete="off"
+                placeholder="Ex. une lame pour debuter l'entrainement"
+              />
+              <button type="submit" id="envoyer">Envoyer</button>
+            </div>
+          </form>
+        </div>
+      </section>
     </main>
 
-    <section class="assistant" aria-labelledby="assistant-titre">
-      <div class="assistant__entete">
-        <p class="assistant__nom" id="assistant-titre"></p>
-        <p class="assistant__role"></p>
-      </div>
-      <div class="assistant__journal" id="assistant-journal" role="log" aria-live="polite"></div>
-      <div class="assistant__suggestions" id="assistant-suggestions"></div>
-      <form class="assistant__formulaire" id="assistant-formulaire">
-        <label for="assistant-saisie">Poser une question a Vega</label>
-        <input type="text" id="assistant-saisie" name="question" placeholder="Que cherchez-vous ?" autocomplete="off" />
-        <button type="submit">Envoyer</button>
-      </form>
-    </section>
-
     <footer class="pied">
+      <p id="pied-nom"></p>
       <p id="pied-bases"></p>
-      <p id="pied-livraison"></p>
     </footer>
 
     <script type="module" src="./src/main.ts"></script>

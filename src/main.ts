@@ -1,210 +1,252 @@
-import catalogueJson from '../catalogue.json';
+import donnees from '../catalogue.json';
 import type { Catalogue, Produit } from './types';
 import { horizonBordure } from './horizon';
-import { illustrationRayon } from './illustrations';
-import { CatalogueSourceAssistant, type SourceAssistant } from './assistant';
+import { avantPoste, borneConseil, vignetteProduit } from './scenes';
+import { choisirSource, formaterPrix, repondre, sourceCourante } from './assistant';
 
-const catalogue = catalogueJson as Catalogue;
+const catalogue = donnees as Catalogue;
+const SEUIL_STOCK_BAS = 10;
 
-const symbole = catalogue.boutique.symbole;
+const el = <T extends HTMLElement>(id: string): T =>
+  document.getElementById(id) as T;
 
-function formaterPrix(prix: number): string {
-  return `${prix.toLocaleString('fr-FR')} ${symbole}`;
-}
+/* ------------------------------------------------------------------ *
+ *  Decor                                                              *
+ * ------------------------------------------------------------------ */
 
-function etatStock(produit: Produit): { classe: string; texte: string } {
-  if (produit.stock === 0) {
-    return { classe: 'rupture', texte: 'Rupture de stock' };
-  }
-  if (produit.stock < 10) {
-    return { classe: 'bas', texte: `Stock bas — ${produit.stock} restants` };
-  }
-  return { classe: 'disponible', texte: 'En stock' };
-}
+el('fond').innerHTML = horizonBordure();
+el('heros-scene').innerHTML = avantPoste();
+el('conseil-scene').innerHTML = borneConseil();
 
-function carteProduit(produit: Produit): HTMLElement {
-  const rayon = catalogue.rayons.find((r) => r.id === produit.rayon);
-  const etat = etatStock(produit);
-  const article = document.createElement('article');
-  article.className = 'carte';
-  article.dataset.reference = produit.reference;
+/* ------------------------------------------------------------------ *
+ *  Textes issus du catalogue                                          *
+ * ------------------------------------------------------------------ */
 
-  article.innerHTML = `
-    <div class="carte__vignette">${illustrationRayon(produit.rayon)}</div>
-    <div class="carte__corps">
-      <p class="carte__rayon">${rayon?.nom ?? produit.rayon}</p>
-      <h2 class="carte__titre">${produit.titre}</h2>
-      ${produit.auteur ? `<p class="carte__auteur">${produit.auteur}</p>` : ''}
-      <p class="carte__resume">${produit.resume}</p>
-      <p class="carte__format">${produit.format}</p>
-      <div class="carte__meta">
-        <span class="carte__note" aria-label="Note ${produit.note} sur 5, ${produit.avis} avis">★ ${produit.note.toFixed(1)} <span class="carte__avis">(${produit.avis})</span></span>
-        <span class="carte__etat carte__etat--${etat.classe}" role="status">${etat.texte}</span>
-      </div>
-      <div class="carte__pied">
-        <span class="carte__prix">${formaterPrix(produit.prix)}</span>
-        <button type="button" class="carte__bouton" ${produit.stock === 0 ? 'disabled' : ''}>
-          ${produit.stock === 0 ? 'Indisponible' : 'Ajouter au panier'}
-        </button>
-      </div>
-      <p class="carte__reference">Reference ${produit.reference}</p>
-    </div>
-  `;
-  return article;
-}
+const { boutique, rayons, assistant } = catalogue;
 
-function creerFiltresRayons(): void {
-  const conteneur = document.getElementById('filtres-rayons')!;
-  const tous = document.createElement('button');
-  tous.type = 'button';
-  tous.className = 'filtre-rayon filtre-rayon--actif';
-  tous.textContent = 'Tous les rayons';
-  tous.dataset.rayon = 'tous';
-  conteneur.appendChild(tous);
+el('enseigne').textContent = boutique.nom;
+el('baseline').textContent = boutique.baseline;
+el('bases').textContent = `Expedie vers ${boutique.bases_desservies.join(' · ')}`;
+el('heros-accroche').textContent = boutique.enseigne;
+el('heros-livraison').textContent =
+  `Livraison offerte des ${formaterPrix(boutique.livraison_gratuite_des)} vers les quatre bases.`;
+el('conseil-intro').textContent =
+  `${assistant.nom}, ${assistant.role.toLowerCase()}, consulte l'inventaire en direct. ` +
+  `Basculez sur Expert Galaxy pour les questions d'histoire et de lieux.`;
+el('pied-nom').textContent = boutique.nom;
+el('pied-bases').textContent = boutique.bases_desservies.join(' · ');
 
-  for (const rayon of catalogue.rayons) {
-    const bouton = document.createElement('button');
-    bouton.type = 'button';
-    bouton.className = 'filtre-rayon';
-    bouton.textContent = rayon.nom;
-    bouton.title = rayon.description;
-    bouton.dataset.rayon = rayon.id;
-    conteneur.appendChild(bouton);
-  }
+/* ------------------------------------------------------------------ *
+ *  Catalogue : filtres et grille                                      *
+ * ------------------------------------------------------------------ */
 
-  conteneur.addEventListener('click', (evenement) => {
-    const cible = evenement.target as HTMLElement;
-    if (!cible.matches('.filtre-rayon')) {
-      return;
-    }
-    conteneur.querySelectorAll('.filtre-rayon').forEach((b) => b.classList.remove('filtre-rayon--actif'));
-    cible.classList.add('filtre-rayon--actif');
-    rayonActif = cible.dataset.rayon ?? 'tous';
-    actualiserGrille();
+let rayonActif = 'tout';
+let seulementDispo = false;
+
+const zoneRayons = el('filtres-rayons');
+const boutons: Array<[string, string]> = [
+  ['tout', 'Tout le comptoir'],
+  ...rayons.map((rayon) => [rayon.id, rayon.nom] as [string, string]),
+];
+
+zoneRayons.innerHTML = boutons
+  .map(
+    ([id, nom], index) =>
+      `<button type="button" class="pilule${index === 0 ? ' pilule--active' : ''}"
+               data-rayon="${id}" aria-pressed="${index === 0}">${nom}</button>`,
+  )
+  .join('');
+
+zoneRayons.addEventListener('click', (evenement) => {
+  const cible = (evenement.target as HTMLElement).closest<HTMLButtonElement>('[data-rayon]');
+  if (!cible) return;
+
+  rayonActif = cible.dataset.rayon ?? 'tout';
+  zoneRayons.querySelectorAll<HTMLButtonElement>('.pilule').forEach((bouton) => {
+    const actif = bouton === cible;
+    bouton.classList.toggle('pilule--active', actif);
+    bouton.setAttribute('aria-pressed', String(actif));
   });
-}
+  dessinerGrille();
+});
 
-let rayonActif = 'tous';
+el<HTMLInputElement>('filtre-dispo').addEventListener('change', (evenement) => {
+  seulementDispo = (evenement.target as HTMLInputElement).checked;
+  dessinerGrille();
+});
 
-function normaliser(texte: string): string {
-  return texte
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
-
-function actualiserGrille(): void {
-  const grille = document.getElementById('grille')!;
-  const resultats = document.getElementById('resultats')!;
-  const recherche = normaliser((document.getElementById('recherche') as HTMLInputElement).value.trim());
-  const tri = (document.getElementById('tri') as HTMLSelectElement).value;
-
-  let produits = catalogue.produits.filter((p) => rayonActif === 'tous' || p.rayon === rayonActif);
-
-  if (recherche) {
-    produits = produits.filter((p) => {
-      const champ = normaliser([p.titre, p.auteur ?? '', ...p.etiquettes].join(' '));
-      return champ.includes(recherche);
-    });
+function etatStock(produit: Produit): { classe: string; libelle: string } {
+  if (produit.stock === 0) return { classe: 'rupture', libelle: 'Rupture au comptoir' };
+  if (produit.stock < SEUIL_STOCK_BAS) {
+    return { classe: 'bas', libelle: `Dernieres pieces — ${produit.stock}` };
   }
-
-  produits = [...produits];
-  if (tri === 'prix-asc') {
-    produits.sort((a, b) => a.prix - b.prix);
-  } else if (tri === 'prix-desc') {
-    produits.sort((a, b) => b.prix - a.prix);
-  } else if (tri === 'note') {
-    produits.sort((a, b) => b.note - a.note);
-  }
-
-  grille.innerHTML = '';
-  for (const produit of produits) {
-    grille.appendChild(carteProduit(produit));
-  }
-
-  resultats.textContent =
-    produits.length === 0
-      ? 'Aucun produit ne correspond a cette recherche.'
-      : `${produits.length} produit${produits.length > 1 ? 's' : ''} affiche${produits.length > 1 ? 's' : ''}.`;
+  return { classe: 'ok', libelle: 'Disponible' };
 }
 
-function initFiltres(): void {
-  creerFiltresRayons();
-  document.getElementById('recherche')!.addEventListener('input', actualiserGrille);
-  document.getElementById('tri')!.addEventListener('change', actualiserGrille);
-  actualiserGrille();
+function carte(produit: Produit): string {
+  const stock = etatStock(produit);
+  const rayon = rayons.find((r) => r.id === produit.rayon)?.nom ?? produit.rayon;
+
+  return `
+    <article class="fiche fiche--${stock.classe}">
+      <div class="fiche__visuel">${vignetteProduit(produit.reference, produit.rayon)}</div>
+      <p class="fiche__reference">${produit.reference}</p>
+      <h3 class="fiche__titre">${produit.titre}</h3>
+      <p class="fiche__meta">${rayon}${produit.auteur ? ` · ${produit.auteur}` : ''}</p>
+      <p class="fiche__resume">${produit.resume}</p>
+      <p class="fiche__format">${produit.format}</p>
+      <p class="fiche__note">
+        <span aria-hidden="true">★</span> ${produit.note.toFixed(1)}
+        <span class="fiche__avis">${produit.avis} avis</span>
+      </p>
+      <div class="fiche__bas">
+        <span class="fiche__prix">${formaterPrix(produit.prix)}</span>
+        <span class="jauge jauge--${stock.classe}">${stock.libelle}</span>
+      </div>
+      <button type="button" class="fiche__action" ${produit.stock === 0 ? 'disabled' : ''}>
+        ${produit.stock === 0 ? 'Indisponible' : 'Ajouter au panier'}
+      </button>
+    </article>`;
 }
 
-function initPied(): void {
-  document.getElementById('pied-bases')!.textContent =
-    `Bases desservies : ${catalogue.boutique.bases_desservies.join(', ')}.`;
-  document.getElementById('pied-livraison')!.textContent =
-    `Livraison gratuite des ${formaterPrix(catalogue.boutique.livraison_gratuite_des)} d'achat.`;
+function dessinerGrille(): void {
+  const visibles = catalogue.produits.filter((produit) => {
+    if (rayonActif !== 'tout' && produit.rayon !== rayonActif) return false;
+    if (seulementDispo && produit.stock === 0) return false;
+    return true;
+  });
+
+  el('grille').innerHTML = visibles.map(carte).join('');
+  el('compteur').textContent =
+    visibles.length === catalogue.produits.length
+      ? `${visibles.length} references au comptoir`
+      : `${visibles.length} reference${visibles.length > 1 ? 's' : ''} affichee${visibles.length > 1 ? 's' : ''}`;
 }
 
-function ajouterMessageJournal(auteur: string, texte: string, produits: Produit[] = []): void {
-  const journal = document.getElementById('assistant-journal')!;
-  const message = document.createElement('div');
-  message.className = `assistant__message assistant__message--${auteur === 'vega' ? 'vega' : 'client'}`;
-  const paragraphe = document.createElement('p');
-  paragraphe.textContent = texte;
-  message.appendChild(paragraphe);
+dessinerGrille();
 
-  if (produits.length > 0) {
-    const liste = document.createElement('ul');
-    liste.className = 'assistant__references';
-    for (const produit of produits) {
-      const item = document.createElement('li');
-      item.textContent = `${produit.titre} — ${formaterPrix(produit.prix)} (${produit.reference})`;
-      liste.appendChild(item);
-    }
-    message.appendChild(liste);
-  }
+/* ------------------------------------------------------------------ *
+ *  La borne de conseil                                                *
+ * ------------------------------------------------------------------ */
 
-  journal.appendChild(message);
+const journal = el('journal');
+const champ = el<HTMLInputElement>('question');
+const boutonEnvoyer = el<HTMLButtonElement>('envoyer');
+
+function majAide(): void {
+  el('borne-aide').textContent = sourceCourante().aide;
+}
+majAide();
+
+function ajouterMessage(
+  texte: string,
+  auteur: string,
+  options: { progressif?: boolean; note?: string } = {},
+): Promise<void> {
+  const bloc = document.createElement('div');
+  bloc.className = `message message--${auteur === 'Vous' ? 'vous' : 'borne'}`;
+
+  const entete = document.createElement('p');
+  entete.className = 'message__auteur';
+  entete.textContent = options.note ? `${auteur} · ${options.note}` : auteur;
+
+  const corps = document.createElement('p');
+  corps.className = 'message__texte';
+
+  bloc.append(entete, corps);
+  journal.append(bloc);
   journal.scrollTop = journal.scrollHeight;
-}
 
-function initAssistant(source: SourceAssistant): void {
-  document.getElementById('assistant-titre')!.textContent = catalogue.assistant.nom;
-  document.querySelector('.assistant__role')!.textContent = catalogue.assistant.role;
-
-  ajouterMessageJournal('vega', catalogue.assistant.accueil);
-
-  const suggestions = document.getElementById('assistant-suggestions')!;
-  for (const suggestion of catalogue.assistant.suggestions) {
-    const bouton = document.createElement('button');
-    bouton.type = 'button';
-    bouton.className = 'assistant__suggestion';
-    bouton.textContent = suggestion;
-    bouton.addEventListener('click', () => poserQuestion(source, suggestion));
-    suggestions.appendChild(bouton);
+  const reduit = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!options.progressif || reduit) {
+    corps.textContent = texte;
+    journal.scrollTop = journal.scrollHeight;
+    return Promise.resolve();
   }
 
-  const formulaire = document.getElementById('assistant-formulaire') as HTMLFormElement;
-  const saisie = document.getElementById('assistant-saisie') as HTMLInputElement;
-  formulaire.addEventListener('submit', (evenement) => {
-    evenement.preventDefault();
-    const question = saisie.value.trim();
-    if (!question) {
-      return;
-    }
-    saisie.value = '';
-    poserQuestion(source, question);
+  return new Promise((resoudre) => {
+    let index = 0;
+    const pas = Math.max(1, Math.round(texte.length / 220));
+    const minuteur = window.setInterval(() => {
+      index += pas;
+      corps.textContent = texte.slice(0, index);
+      journal.scrollTop = journal.scrollHeight;
+      if (index >= texte.length) {
+        window.clearInterval(minuteur);
+        corps.textContent = texte;
+        resoudre();
+      }
+    }, 14);
   });
 }
 
-async function poserQuestion(source: SourceAssistant, question: string): Promise<void> {
-  ajouterMessageJournal('client', question);
-  const reponse = await source.repondre(question);
-  ajouterMessageJournal('vega', reponse.texte, reponse.produits);
+void ajouterMessage(assistant.accueil, assistant.nom);
+
+el('suggestions').innerHTML = assistant.suggestions
+  .map((texte) => `<button type="button" class="suggestion">${texte}</button>`)
+  .join('');
+
+el('suggestions').addEventListener('click', (evenement) => {
+  const cible = (evenement.target as HTMLElement).closest<HTMLButtonElement>('.suggestion');
+  if (!cible) return;
+  champ.value = cible.textContent?.trim() ?? '';
+  void poser();
+});
+
+document.querySelectorAll<HTMLButtonElement>('[data-source]').forEach((bouton) => {
+  bouton.addEventListener('click', () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-source]').forEach((autre) => {
+      const actif = autre === bouton;
+      autre.classList.toggle('source--active', actif);
+      autre.setAttribute('aria-checked', String(actif));
+    });
+    const source = choisirSource(bouton.dataset.source ?? 'comptoir');
+    majAide();
+    void ajouterMessage(`Vous parlez maintenant a : ${source.nom}.`, 'Comptoir');
+  });
+});
+
+let enCours = false;
+
+async function poser(): Promise<void> {
+  const question = champ.value.trim();
+  if (!question || enCours) return;
+
+  enCours = true;
+  boutonEnvoyer.disabled = true;
+  champ.value = '';
+
+  await ajouterMessage(question, 'Vous');
+
+  const source = sourceCourante();
+  const attente = document.createElement('p');
+  attente.className = 'attente-reponse';
+  attente.textContent =
+    source.nom === 'Expert Galaxy'
+      ? "L'archiviste consulte les archives…"
+      : 'Consultation de l\'inventaire…';
+  journal.append(attente);
+  journal.scrollTop = journal.scrollHeight;
+
+  try {
+    const reponse = await repondre(question);
+    attente.remove();
+    const note = reponse.version ? `version ${reponse.version}` : undefined;
+    await ajouterMessage(reponse.texte, source.nom, { progressif: true, note });
+  } catch {
+    attente.remove();
+    await ajouterMessage(
+      'La borne ne repond pas pour le moment. Reposez la question.',
+      source.nom,
+    );
+  } finally {
+    enCours = false;
+    boutonEnvoyer.disabled = false;
+    champ.focus();
+  }
 }
 
-function initFond(): void {
-  document.getElementById('fond')!.innerHTML = horizonBordure();
-}
-
-initFond();
-initFiltres();
-initPied();
-initAssistant(new CatalogueSourceAssistant(catalogue));
+el<HTMLFormElement>('saisie').addEventListener('submit', (evenement) => {
+  evenement.preventDefault();
+  void poser();
+});
