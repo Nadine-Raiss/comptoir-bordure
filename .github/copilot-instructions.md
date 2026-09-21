@@ -134,40 +134,44 @@ Conventions de dessin :
   `repondre(question: string): Promise<ReponseAssistant>`.
 - Isole l'accès aux données derrière une interface nommée `SourceAssistant`.
 
-### Deux sources, une seule interface
+### Trois sources, une seule interface
 
-**C'est le cœur de la démonstration.** L'assistant a deux implémentations de
+**C'est le cœur de la démonstration.** L'assistant a trois implémentations de
 `SourceAssistant`, et l'interface graphique ne sait pas laquelle répond :
 
 | Source | Implémentation | Répond à |
 |---|---|---|
-| **Comptoir** | `SourceCatalogueLocale` | Les questions de **catalogue** : prix, stock, rayon, rupture. Lit `catalogue.json`. |
-| **Expert Galaxy** | `SourceExpertGalaxy` | Les questions de **lore** : histoire, lieux, factions, culture de la galaxie. `POST /api/conseil`. |
+| **Quartier-Maitre** | `SourceQuartierMaitre` | Les **ventes, stocks et ruptures réels** : data agent Fabric interrogé en MCP. `POST /api/quartier-maitre`. |
+| **Comptoir** | `SourceCatalogueLocale` | Les questions de **catalogue** : prix, rayon, disponibilité. Lit `catalogue.json`, sans réseau. |
+| **Expert Galaxy** | `SourceExpertGalaxy` | Les questions de **lore** : histoire, lieux, factions. `POST /api/conseil`. |
 
-Un **sélecteur visible** au-dessus de la zone de saisie permet de basculer de
-l'une à l'autre. L'origine de chaque réponse est affichée à côté du message
-(« Comptoir » ou « Expert Galaxy »).
+Un **sélecteur visible** au-dessus de la zone de saisie permet de basculer.
+L'origine de chaque réponse est affichée à côté du message.
 
-`SourceExpertGalaxy` appelle :
+**Règles absolues pour les deux sources distantes :**
 
-```ts
-await fetch('/api/conseil', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ question }),
-});
-// -> { texte: string, references: string[], source?: string }
-```
+- **Ne mets jamais de clé, de jeton ou d'URL Azure dans le front-end.** Les
+  fonctions `api/conseil` et `api/quartier-maitre` détiennent les secrets côté
+  serveur ; le navigateur ne connaît que les chemins `/api/...`.
+- **`SourceQuartierMaitre` fonctionne en deux temps.** Les fonctions managées
+  coupent à 45 s et le data agent met 60 à 120 s :
+  1. `POST { question }` → `{ statut: "en_cours", id }`
+  2. `POST { id }` toutes les 3 s → `{ statut: "en_cours" }` puis `{ statut: "pret", texte }`
 
-**Règles absolues pour `SourceExpertGalaxy` :**
+  Affiche « Le quartier-maître interroge la base… » pendant toute l'attente et
+  **désactive le bouton d'envoi**.
+- **`SourceExpertGalaxy`** est synchrone, 3 à 10 s :
 
-- **Ne mets jamais de clé d'API, de jeton ou d'URL Foundry dans le front-end.**
-  La fonction `api/conseil` détient la clé côté serveur ; le navigateur ne voit
-  que `/api/conseil`. N'ajoute aucune variable d'environnement côté client.
-- L'appel prend **10 à 30 secondes**. Affiche un état d'attente explicite
-  (« L'archiviste consulte les archives… ») et **désactive le bouton d'envoi**
-  pendant ce temps.
-- Si la réponse n'est pas `ok`, affiche le champ `texte` renvoyé par l'API tel
+  ```ts
+  await fetch('/api/conseil', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question }),
+  });
+  // -> { texte: string, references: string[], version?: string }
+  ```
+
+- Si une réponse n'est pas `ok`, affiche le champ `texte` renvoyé par l'API tel
   quel. N'invente pas de message d'erreur technique.
 
 **Règles pour `SourceCatalogueLocale` :**
