@@ -40,8 +40,14 @@ try {
              --query "properties.apiKey" -o tsv
   if (-not $token) { throw "Jeton de deploiement introuvable." }
 
+  $argsSwa = @('deploy', '.\dist', '--env', 'production', '--no-use-keychain')
+  if (Test-Path .\api) {
+    # La fonction /api/conseil detient la cle Foundry : elle doit partir avec le site.
+    $argsSwa += @('--api-location', '.\api')
+  }
+
   $env:SWA_CLI_DEPLOYMENT_TOKEN = $token
-  npx --yes @azure/static-web-apps-cli@latest deploy .\dist --env production --no-use-keychain
+  npx --yes @azure/static-web-apps-cli@latest @argsSwa
   $env:SWA_CLI_DEPLOYMENT_TOKEN = $null
   if ($LASTEXITCODE -ne 0) { throw "Le deploiement a echoue." }
 

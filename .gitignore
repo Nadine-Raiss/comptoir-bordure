@@ -2,3 +2,9 @@ node_modules/
 dist/
 .vite/
 *.log
+
+# Jamais de secret dans le depot : la cle Foundry vit dans les parametres
+# d'application de la Static Web App, cote serveur.
+api/local.settings.json
+.env
+.env.*
