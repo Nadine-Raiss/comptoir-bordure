@@ -42,8 +42,12 @@ try {
 
   $argsSwa = @('deploy', '.\dist', '--env', 'production', '--no-use-keychain')
   if (Test-Path .\api) {
-    # La fonction /api/conseil detient la cle Foundry : elle doit partir avec le site.
+    # La fonction /api/conseil detient la cle Foundry : elle DOIT partir avec le
+    # site. Sans ce flag, le deploiement remplace le site sans l'API et toutes
+    # les routes /api repondent 500 "Backend call failure".
     $argsSwa += @('--api-location', '.\api')
+  } else {
+    Write-Host "     ATTENTION : dossier api absent, le site partira sans /api/conseil." -ForegroundColor Yellow
   }
 
   $env:SWA_CLI_DEPLOYMENT_TOKEN = $token
@@ -54,7 +58,27 @@ try {
   Write-Host "`n4/4  Verification ..." -ForegroundColor Cyan
   Start-Sleep -Seconds 8
   $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 40
-  Write-Host "     HTTP $($r.StatusCode) - $([math]::Round($r.Content.Length/1KB,1)) Ko" -ForegroundColor Green
+  Write-Host "     site   : HTTP $($r.StatusCode) - $([math]::Round($r.Content.Length/1KB,1)) Ko" -ForegroundColor Green
+
+  if (Test-Path .\api) {
+    # La fonction managee met une bonne minute a demarrer apres un deploiement.
+    # On reessaie plutot que de conclure trop vite a un echec.
+    Write-Host "     api    : demarrage de la fonction ..." -ForegroundColor DarkGray -NoNewline
+    $sonde = $null
+    foreach ($essai in 1..10) {
+      Start-Sleep -Seconds 12
+      try { $sonde = Invoke-RestMethod -Uri "$url`api/ping" -TimeoutSec 30; break }
+      catch { Write-Host "." -ForegroundColor DarkGray -NoNewline }
+    }
+    Write-Host ""
+    if ($sonde) {
+      Write-Host "     api    : OK (node $($sonde.node), cle $(if ($sonde.cle_presente) {'presente'} else {'ABSENTE'}))" -ForegroundColor Green
+    } else {
+      Write-Host "     api    : ECHEC apres 2 min - /api/ping ne repond pas." -ForegroundColor Red
+      Write-Host "              Le site est en ligne mais Expert Galaxy ne marchera pas." -ForegroundColor Red
+    }
+  }
+
   Write-Host "`n     $url`n" -ForegroundColor Green
 
   if ($Ouvrir) { Start-Process $url }
