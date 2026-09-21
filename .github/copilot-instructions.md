@@ -134,21 +134,24 @@ Conventions de dessin :
   `repondre(question: string): Promise<ReponseAssistant>`.
 - Isole l'accès aux données derrière une interface nommée `SourceAssistant`.
 
-### Trois sources, une seule interface
+### Deux agents, une seule interface
 
-**C'est le cœur de la démonstration.** L'assistant a trois implémentations de
+**C'est le cœur de la démonstration.** L'assistant a deux implémentations de
 `SourceAssistant`, et l'interface graphique ne sait pas laquelle répond :
 
 | Source | Implémentation | Répond à |
 |---|---|---|
 | **Quartier-Maitre** | `SourceQuartierMaitre` | Les **ventes, stocks et ruptures réels** : data agent Fabric interrogé en MCP. `POST /api/quartier-maitre`. |
-| **Comptoir** | `SourceCatalogueLocale` | Les questions de **catalogue** : prix, rayon, disponibilité. Lit `catalogue.json`, sans réseau. |
-| **Expert Galaxy** | `SourceExpertGalaxy` | Les questions de **lore** : histoire, lieux, factions. `POST /api/conseil`. |
+| **Expert Galaxy** | `SourceExpertGalaxy` | Les questions de **lore** : histoire, lieux, factions. Agent Foundry. `POST /api/conseil`. |
 
 Un **sélecteur visible** au-dessus de la zone de saisie permet de basculer.
 L'origine de chaque réponse est affichée à côté du message.
 
-**Règles absolues pour les deux sources distantes :**
+> Il n'y a **pas** de source locale : les deux réponses viennent d'agents
+> réels. Ne réintroduis pas de recherche dans `catalogue.json` — ce fichier ne
+> sert qu'à afficher la grille de produits.
+
+**Règles absolues :**
 
 - **Ne mets jamais de clé, de jeton ou d'URL Azure dans le front-end.** Les
   fonctions `api/conseil` et `api/quartier-maitre` détiennent les secrets côté
@@ -173,13 +176,6 @@ L'origine de chaque réponse est affichée à côté du message.
 
 - Si une réponse n'est pas `ok`, affiche le champ `texte` renvoyé par l'API tel
   quel. N'invente pas de message d'erreur technique.
-
-**Règles pour `SourceCatalogueLocale` :**
-
-- Recherche par titre, rayon, prix, stock, étiquette dans `catalogue.json`.
-- Répond avec des **produits réels du catalogue**, jamais inventés.
-- Cite toujours les **références** des produits recommandés.
-- S'il ne trouve rien, il le dit et propose une recherche voisine.
 
 Les réponses s'affichent progressivement, dans un conteneur `role="log"`
 avec `aria-live="polite"`.
