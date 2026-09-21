@@ -1,0 +1,230 @@
+{
+  "boutique": {
+    "nom": "Comptoir de la Bordure",
+    "baseline": "Livres et equipement pour les mondes eloignes",
+    "devise": "credits",
+    "symbole": "cr",
+    "livraison_gratuite_des": 250,
+    "bases_desservies": ["Base Aurore", "Base Vigie", "Base Cendre", "Relais Tessara"]
+  },
+  "rayons": [
+    {
+      "id": "ouvrages",
+      "nom": "Ouvrages",
+      "description": "Recits, manuels de navigation et chroniques des mondes eloignes."
+    },
+    {
+      "id": "equipement",
+      "nom": "Equipement",
+      "description": "Materiel de terrain eprouve, revendu sous garantie du comptoir."
+    },
+    {
+      "id": "insignes",
+      "nom": "Insignes et textile",
+      "description": "Marquages d'escadron, vetements de vol et pieces de collection."
+    },
+    {
+      "id": "modeles",
+      "nom": "Maquettes",
+      "description": "Reproductions a l'echelle des appareils de la flotte."
+    }
+  ],
+  "produits": [
+    {
+      "reference": "LIV-CN-1",
+      "titre": "Chroniques de la Bordure, volume I",
+      "rayon": "ouvrages",
+      "auteur": "Vera Solheim",
+      "prix": 32,
+      "stock": 48,
+      "note": 4.6,
+      "avis": 214,
+      "format": "Relie, 420 pages",
+      "resume": "Trente ans de manoeuvres sur les routes oubliees, racontees par une officier de navigation qui les a toutes empruntees.",
+      "etiquettes": ["recit", "best-seller"]
+    },
+    {
+      "reference": "LIV-NA-4",
+      "titre": "Manuel de navigation en secteur non balise",
+      "rayon": "ouvrages",
+      "auteur": "Commandant Ilan Reyes",
+      "prix": 78,
+      "stock": 12,
+      "note": 4.9,
+      "avis": 87,
+      "format": "Relie toile, 640 pages",
+      "resume": "La reference des ecoles de vol. Calcul de sauts, lecture de derives, procedures d'urgence.",
+      "etiquettes": ["technique", "reference"]
+    },
+    {
+      "reference": "LIV-AT-7",
+      "titre": "Atlas des mondes eloignes",
+      "rayon": "ouvrages",
+      "auteur": "Collectif",
+      "prix": 124,
+      "stock": 6,
+      "note": 4.8,
+      "avis": 53,
+      "format": "Grand format, 210 planches",
+      "resume": "Deux cent dix planches cartographiees, annotees par les equipages qui les ont relevees.",
+      "etiquettes": ["cartographie", "edition limitee"]
+    },
+    {
+      "reference": "LIV-SU-2",
+      "titre": "Survivre a la decompression",
+      "rayon": "ouvrages",
+      "auteur": "Dr. Maren Oyelaran",
+      "prix": 24,
+      "stock": 93,
+      "note": 4.3,
+      "avis": 342,
+      "format": "Broche, 180 pages",
+      "resume": "Protocoles medicaux de terrain. Ecrit court, pense pour etre lu dans l'urgence.",
+      "etiquettes": ["medical", "terrain"]
+    },
+    {
+      "reference": "LIV-JO-9",
+      "titre": "Journal de bord du Relais Tessara",
+      "rayon": "ouvrages",
+      "auteur": "Anonyme",
+      "prix": 45,
+      "stock": 0,
+      "note": 4.7,
+      "avis": 128,
+      "format": "Fac-simile relie",
+      "resume": "Reproduction integrale du registre tenu pendant les dix-huit mois d'isolement du relais.",
+      "etiquettes": ["archive", "rupture"]
+    },
+    {
+      "reference": "EQP-LA-3",
+      "titre": "Lampe de terrain a induction LA-3",
+      "rayon": "equipement",
+      "prix": 56,
+      "stock": 74,
+      "note": 4.4,
+      "avis": 401,
+      "format": "Autonomie 40 h",
+      "resume": "Pas de pile, pas de recharge. Deux minutes de manivelle pour six heures de lumiere.",
+      "etiquettes": ["terrain"]
+    },
+    {
+      "reference": "EQP-KT-1",
+      "titre": "Kit de reparation de terrain KT-1",
+      "rayon": "equipement",
+      "prix": 620,
+      "stock": 15,
+      "note": 4.8,
+      "avis": 96,
+      "format": "Malette 34 pieces",
+      "resume": "Le kit reglementaire des equipages de maintenance. Trente-quatre pieces, aucune superflue.",
+      "etiquettes": ["professionnel"]
+    },
+    {
+      "reference": "EQP-BA-7",
+      "titre": "Balise de detresse BA-7",
+      "rayon": "equipement",
+      "prix": 380,
+      "stock": 5,
+      "note": 4.9,
+      "avis": 62,
+      "format": "Portee 12 unites astronomiques",
+      "resume": "Emission continue pendant neuf jours. Homologuee pour le vol en secteur non balise.",
+      "etiquettes": ["securite", "stock bas"]
+    },
+    {
+      "reference": "EQP-GO-5",
+      "titre": "Gourde isotherme de vol GO-5",
+      "rayon": "equipement",
+      "prix": 38,
+      "stock": 156,
+      "note": 4.1,
+      "avis": 588,
+      "format": "750 ml",
+      "resume": "Tient la temperature douze heures. Accrochage compatible harnais standard.",
+      "etiquettes": ["quotidien"]
+    },
+    {
+      "reference": "INS-EC-2",
+      "titre": "Insigne d'escadron grave",
+      "rayon": "insignes",
+      "prix": 55,
+      "stock": 210,
+      "note": 4.5,
+      "avis": 733,
+      "format": "Laiton brosse, 60 mm",
+      "resume": "Grave a la demande aux couleurs de l'escadron. Comptez six jours de fabrication.",
+      "etiquettes": ["personnalisable"]
+    },
+    {
+      "reference": "INS-MA-7",
+      "titre": "Manteau de vol renforce MA-7",
+      "rayon": "insignes",
+      "prix": 680,
+      "stock": 23,
+      "note": 4.7,
+      "avis": 189,
+      "format": "Tailles S a XXL",
+      "resume": "Coupe reglementaire, doublure thermique amovible. Le vetement le plus vendu du comptoir.",
+      "etiquettes": ["textile", "best-seller"]
+    },
+    {
+      "reference": "INS-EM-1",
+      "titre": "Ecusson brode des quatre bases",
+      "rayon": "insignes",
+      "prix": 18,
+      "stock": 340,
+      "note": 4.2,
+      "avis": 421,
+      "format": "Thermocollant, 80 mm",
+      "resume": "Les quatre bases sur une seule piece. Le cadeau de fin de cycle le plus offert.",
+      "etiquettes": ["collection"]
+    },
+    {
+      "reference": "MOD-CL-1",
+      "titre": "Maquette de chasseur leger, echelle 1/48",
+      "rayon": "modeles",
+      "prix": 145,
+      "stock": 31,
+      "note": 4.6,
+      "avis": 157,
+      "format": "142 pieces, resine",
+      "resume": "Reproduction du chasseur d'interception standard. Notice de montage en francais.",
+      "etiquettes": ["collection"]
+    },
+    {
+      "reference": "MOD-RE-6",
+      "titre": "Maquette du Relais Tessara, echelle 1/2000",
+      "rayon": "modeles",
+      "prix": 390,
+      "stock": 3,
+      "note": 5.0,
+      "avis": 24,
+      "format": "Edition numerotee, 480 pieces",
+      "resume": "Reproduction complete de la station, coursives interieures comprises. Serie limitee a 300 exemplaires.",
+      "etiquettes": ["edition limitee", "stock bas"]
+    },
+    {
+      "reference": "MOD-CA-3",
+      "titre": "Cartographie murale gravee",
+      "rayon": "modeles",
+      "prix": 210,
+      "stock": 18,
+      "note": 4.4,
+      "avis": 71,
+      "format": "900 x 600 mm, alliage grave",
+      "resume": "Les routes principales de la Bordure, gravees dans la masse. Fixation murale fournie.",
+      "etiquettes": ["decoration"]
+    }
+  ],
+  "assistant": {
+    "nom": "Vega",
+    "role": "Conseiller du comptoir",
+    "accueil": "Bonjour. Je connais le catalogue du comptoir. Que cherchez-vous ?",
+    "suggestions": [
+      "Quels ouvrages pour apprendre la navigation ?",
+      "Que conseillez-vous a moins de 100 credits ?",
+      "Qu'est-ce qui est en rupture de stock ?",
+      "Un cadeau pour un pilote en fin de cycle ?"
+    ]
+  }
+}

@@ -1,0 +1,102 @@
+/* Fondations uniquement.
+   Tout le reste de l'habillage est genere avec GitHub Copilot. */
+
+:root {
+  --nuit: #070b16;
+  --surface: #111a2e;
+  --surface-haute: #1a2440;
+  --texte: #eef2f8;
+  --texte-doux: #9aa7bd;
+  --ambre: #ffc94a;
+  --alerte: #e0533d;
+  --trait: #24304d;
+
+  --rayon: 10px;
+  --pas: 8px;
+  --largeur-max: 1180px;
+
+  --police: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--nuit);
+  color: var(--texte);
+  font-family: var(--police);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--ambre);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ambre);
+  outline-offset: 3px;
+}
+
+/* --- page d'attente : remplacee par le catalogue genere en direct --- */
+
+.attente {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--pas) * 2);
+  padding: calc(var(--pas) * 4);
+  text-align: center;
+}
+
+.attente__enseigne {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ambre);
+}
+
+.attente__titre {
+  margin: 0;
+  font-size: clamp(1.9rem, 5vw, 3.1rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.attente__texte {
+  margin: 0;
+  max-width: 34ch;
+  color: var(--texte-doux);
+}
+
+.attente__point {
+  width: 9px;
+  height: 9px;
+  margin-top: calc(var(--pas) * 2);
+  border-radius: 50%;
+  background: var(--ambre);
+  animation: pulsation 2s ease-in-out infinite;
+}
+
+@keyframes pulsation {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .attente__point {
+    animation: none;
+    opacity: 0.7;
+  }
+}
