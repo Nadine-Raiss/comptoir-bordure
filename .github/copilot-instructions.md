@@ -37,11 +37,34 @@ Ne la redessine pas, ne la remplace pas par une image.
 | Fonction | Usage |
 |---|---|
 | `avantPoste()` | Grande scène pour le **bandeau d'accueil** — l'avant-poste sous les deux soleils |
+| `borneConseil()` | Scène pour la **zone de conseil** — un droïde devant une console d'archives |
 | `vignetteProduit(reference, rayon)` | **La vignette de chaque fiche produit** — appelle-la pour tous les produits |
-| `lameEnergie()`, `cristal()`, `ouvrage()`, `medaillon()`, `chasseur()` | Vignettes individuelles si besoin |
+| `lameEnergie()`, `cristal()`, `ouvrage()`, `medaillon()`, `chasseur()`, `cargo()`, `casque()`, `droide()`, `rapace()` | Vignettes individuelles si besoin |
 
-**Utilise-les.** Ne redessine pas ces illustrations et n'ajoute aucune balise
-`<img>`.
+**Utilise-les.** Ne redessine pas ces illustrations.
+
+### Les photographies
+
+`public/images/` contient **quatre photographies de la NASA, domaine public** :
+
+| Fichier | Sujet | Où l'utiliser |
+|---|---|---|
+| `nebuleuse.jpg` | Nébuleuse de la Carène (James Webb) | **Fond de page**, très assombri |
+| `panorama.jpg` | Panorama martien au sol | **Bandeau d'accueil** |
+| `coucher.jpg` | Coucher de soleil sur Mars | Zone de conseil |
+| `dunes.jpg` | Dunes vues d'orbite | En réserve |
+
+**Règles pour les photographies :**
+
+- Ce sont les **seules** images bitmap autorisées. N'ajoute jamais d'image
+  externe, de CDN, ni de visuel issu d'une œuvre de fiction existante.
+- Elles doivent être **teintées pour entrer dans la palette** : filtre CSS
+  combinant `saturate`, `brightness`, `sepia` et `hue-rotate`, plus un voile
+  dégradé. Une photo laissée brute jure avec le reste.
+- Toujours un `alt` descriptif en français, et `loading="lazy"` sauf pour le
+  bandeau d'accueil.
+- Le crédit « Images : NASA / JPL-Caltech — domaine public » reste dans le pied
+  de page.
 
 Les variables CSS existent déjà dans `src/styles.css` sous `:root`. **Utilise-les,
 ne les remplace pas.**
@@ -80,19 +103,22 @@ secondaire.
 
 ## Illustrations — règle stricte
 
-La boutique n'utilise **aucune photo, aucune image bitmap, aucune ressource
-externe**. Toutes les illustrations sont des **SVG originaux écrits à la main**
-dans `src/illustrations.ts`.
+La boutique n'utilise **aucune ressource externe**. Les illustrations sont des
+**SVG originaux écrits à la main** dans `src/scenes.ts`, et les seules images
+bitmap autorisées sont les **photographies NASA du domaine public** déjà
+présentes dans `public/images/`.
 
 Trois raisons, sans exception :
 
-1. **Propriété intellectuelle** : on ne reproduit aucun design existant.
+1. **Propriété intellectuelle** : on ne reproduit aucun design existant et on
+   n'utilise aucun visuel d'une œuvre de fiction protégée. Le site est publié
+   sur une URL publique et présenté lors d'un événement filmé.
 2. **Qualité de projection** : le SVG reste net sur n'importe quel écran.
-3. **Fonctionnement hors ligne** : tout est inliné. Une seule image externe
-   casserait la démonstration.
+3. **Fonctionnement hors ligne** : les SVG sont inlinés, les photos sont
+   servies depuis le site lui-même. Aucun appel à un CDN.
 
-Chaque produit doit avoir une **vignette SVG générée** à partir de son rayon
-(ouvrage, équipement, insigne, maquette) — pas une photo.
+Chaque produit doit avoir une **vignette SVG** issue de `vignetteProduit()`,
+pas une photo.
 
 Conventions de dessin :
 
