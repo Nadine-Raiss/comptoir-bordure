@@ -67,7 +67,7 @@ try {
     $sonde = $null
     foreach ($essai in 1..10) {
       Start-Sleep -Seconds 12
-      try { $sonde = Invoke-RestMethod -Uri "$url`api/ping" -TimeoutSec 30; break }
+      try { $sonde = Invoke-RestMethod -Uri "${url}api/ping" -TimeoutSec 30; break }
       catch { Write-Host "." -ForegroundColor DarkGray -NoNewline }
     }
     Write-Host ""
