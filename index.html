@@ -3,19 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comptoir de la Bordure — ouverture prochaine</title>
+    <title>Comptoir de la Bordure</title>
     <meta name="description" content="Comptoir de la Bordure — livres et equipement pour les mondes eloignes." />
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <main class="attente">
-      <p class="attente__enseigne">Comptoir de la Bordure</p>
-      <h1 class="attente__titre">Ouverture prochaine</h1>
-      <p class="attente__texte">
-        Le catalogue est en cours de mise en rayon.
-      </p>
-      <p class="attente__point" aria-hidden="true"></p>
+    <div class="fond" id="fond" aria-hidden="true"></div>
+
+    <header class="entete">
+      <div class="entete__contenu">
+        <p class="entete__enseigne">Comptoir de la Bordure</p>
+        <h1 class="entete__titre">Le catalogue de l'avant-poste</h1>
+        <p class="entete__baseline">Lames, ouvrages et reliques pour les mondes sans loi</p>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="filtres" aria-label="Filtrer le catalogue">
+        <div class="filtres__recherche">
+          <label for="recherche">Rechercher un produit</label>
+          <input type="search" id="recherche" name="recherche" placeholder="Titre, auteur, etiquette..." autocomplete="off" />
+        </div>
+        <div class="filtres__rayons" id="filtres-rayons" role="group" aria-label="Filtrer par rayon"></div>
+        <div class="filtres__tri">
+          <label for="tri">Trier par</label>
+          <select id="tri">
+            <option value="pertinence">Pertinence</option>
+            <option value="prix-asc">Prix croissant</option>
+            <option value="prix-desc">Prix decroissant</option>
+            <option value="note">Meilleure note</option>
+          </select>
+        </div>
+        <p class="filtres__resultats" id="resultats" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="grille" id="grille" aria-label="Produits du catalogue"></section>
     </main>
+
+    <section class="assistant" aria-labelledby="assistant-titre">
+      <div class="assistant__entete">
+        <p class="assistant__nom" id="assistant-titre"></p>
+        <p class="assistant__role"></p>
+      </div>
+      <div class="assistant__journal" id="assistant-journal" role="log" aria-live="polite"></div>
+      <div class="assistant__suggestions" id="assistant-suggestions"></div>
+      <form class="assistant__formulaire" id="assistant-formulaire">
+        <label for="assistant-saisie">Poser une question a Vega</label>
+        <input type="text" id="assistant-saisie" name="question" placeholder="Que cherchez-vous ?" autocomplete="off" />
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+
+    <footer class="pied">
+      <p id="pied-bases"></p>
+      <p id="pied-livraison"></p>
+    </footer>
+
     <script type="module" src="./src/main.ts"></script>
   </body>
 </html>
