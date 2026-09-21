@@ -32,6 +32,17 @@ d'étoiles. **Appelle-la et pose-la en fond de page**, derrière tout le contenu
 en `position: fixed`, `inset: 0`, `pointer-events: none`, `z-index: -1`.
 Ne la redessine pas, ne la remplace pas par une image.
 
+**Les illustrations existent aussi.** `src/scenes.ts` exporte :
+
+| Fonction | Usage |
+|---|---|
+| `avantPoste()` | Grande scène pour le **bandeau d'accueil** — l'avant-poste sous les deux soleils |
+| `vignetteProduit(reference, rayon)` | **La vignette de chaque fiche produit** — appelle-la pour tous les produits |
+| `lameEnergie()`, `cristal()`, `ouvrage()`, `medaillon()`, `chasseur()` | Vignettes individuelles si besoin |
+
+**Utilise-les.** Ne redessine pas ces illustrations et n'ajoute aucune balise
+`<img>`.
+
 Les variables CSS existent déjà dans `src/styles.css` sous `:root`. **Utilise-les,
 ne les remplace pas.**
 
@@ -95,17 +106,53 @@ Conventions de dessin :
 - Zone de conversation **ancrée dans la page**, pas une bulle flottante.
 - Le composant vit dans `src/assistant.ts`. Il expose une fonction
   `repondre(question: string): Promise<ReponseAssistant>`.
-- **L'implémentation locale interroge `catalogue.json`** : recherche par titre,
-  rayon, prix, stock, étiquette. Elle doit répondre avec des **produits réels du
-  catalogue**, jamais inventés.
-- Cette fonction est le **point de branchement** : elle doit pouvoir être
-  remplacée par un appel à un agent distant sans toucher à l'interface.
-  Isole l'accès aux données derrière une interface nommée `SourceAssistant`.
-- L'assistant **cite toujours les références** des produits qu'il recommande.
+- Isole l'accès aux données derrière une interface nommée `SourceAssistant`.
+
+### Deux sources, une seule interface
+
+**C'est le cœur de la démonstration.** L'assistant a deux implémentations de
+`SourceAssistant`, et l'interface graphique ne sait pas laquelle répond :
+
+| Source | Implémentation | Répond à |
+|---|---|---|
+| **Comptoir** | `SourceCatalogueLocale` | Les questions de **catalogue** : prix, stock, rayon, rupture. Lit `catalogue.json`. |
+| **Expert Galaxy** | `SourceExpertGalaxy` | Les questions de **lore** : histoire, lieux, factions, culture de la galaxie. `POST /api/conseil`. |
+
+Un **sélecteur visible** au-dessus de la zone de saisie permet de basculer de
+l'une à l'autre. L'origine de chaque réponse est affichée à côté du message
+(« Comptoir » ou « Expert Galaxy »).
+
+`SourceExpertGalaxy` appelle :
+
+```ts
+await fetch('/api/conseil', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ question }),
+});
+// -> { texte: string, references: string[], source?: string }
+```
+
+**Règles absolues pour `SourceExpertGalaxy` :**
+
+- **Ne mets jamais de clé d'API, de jeton ou d'URL Foundry dans le front-end.**
+  La fonction `api/conseil` détient la clé côté serveur ; le navigateur ne voit
+  que `/api/conseil`. N'ajoute aucune variable d'environnement côté client.
+- L'appel prend **10 à 30 secondes**. Affiche un état d'attente explicite
+  (« L'archiviste consulte les archives… ») et **désactive le bouton d'envoi**
+  pendant ce temps.
+- Si la réponse n'est pas `ok`, affiche le champ `texte` renvoyé par l'API tel
+  quel. N'invente pas de message d'erreur technique.
+
+**Règles pour `SourceCatalogueLocale` :**
+
+- Recherche par titre, rayon, prix, stock, étiquette dans `catalogue.json`.
+- Répond avec des **produits réels du catalogue**, jamais inventés.
+- Cite toujours les **références** des produits recommandés.
 - S'il ne trouve rien, il le dit et propose une recherche voisine.
-  **Il n'invente jamais un produit.**
-- Les réponses s'affichent progressivement, dans un conteneur `role="log"`
-  avec `aria-live="polite"`.
+
+Les réponses s'affichent progressivement, dans un conteneur `role="log"`
+avec `aria-live="polite"`.
 
 ## Conventions de code
 
