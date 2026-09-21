@@ -112,14 +112,26 @@ module.exports = async function (context, req) {
     const charge = await reponse.json();
     const texte = extraireTexte(charge);
 
+    // Quelle version de l'agent a repondu. L'endpoint route vers @latest :
+    // si Philippe publie une nouvelle version, elle prend le relais toute
+    // seule. On journalise pour pouvoir le constater le jour J.
+    const version = charge?.agent_reference?.version ?? null;
+    context.log.info(`Expert-Galaxy version ${version ?? 'inconnue'} a repondu.`);
+
     if (!texte) {
       return repondre(200, {
         texte: "Je n'ai rien trouve sur ce sujet dans mes archives.",
         references: [],
+        version,
       });
     }
 
-    return repondre(200, { texte, references: [], source: 'Expert-Galaxy' });
+    return repondre(200, {
+      texte,
+      references: [],
+      source: 'Expert-Galaxy',
+      version,
+    });
   } catch (erreur) {
     const expire = erreur.name === 'AbortError';
     context.log.error(`Appel Foundry en echec : ${erreur.message}`);
