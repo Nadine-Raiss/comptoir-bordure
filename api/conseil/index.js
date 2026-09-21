@@ -21,6 +21,24 @@ const VERSION_API = process.env.FOUNDRY_API_VERSION || 'v1';
 const DELAI_MS = 60000;
 const LONGUEUR_MAX_QUESTION = 500;
 
+// CADRAGE — a ne pas retirer.
+//
+// L'agent Foundry porte ses propres instructions et l'outil de recherche web
+// est actif : sans ce prefixe, une question comme "qui sont les Veilleurs ?"
+// renvoie un resultat du monde reel, parfois hors sujet ou sensible.
+// L'API refuse le champ "instructions" quand la cible est un agent
+// (400 invalid_payload) : le cadre doit donc voyager dans la question.
+const CADRE = [
+  "[CADRE] Tu es l'archiviste d'un univers de space opera FICTIF : la Bordure,",
+  'ses quatre bases (Aurore, Vigie, Cendre, Relais Tessara) et l\'Ordre des',
+  'Veilleurs. Reponds uniquement dans cet univers fictif, en inventant de',
+  'maniere coherente si tu ne sais pas. N\'utilise pas la recherche web. Ne parle',
+  'jamais du monde reel, de politique, de personnes reelles ni d\'oeuvres',
+  'existantes. Trois phrases maximum, en francais.',
+  '',
+  '[QUESTION] ',
+].join(' ').replace(' [QUESTION] ', '\n\n[QUESTION] ');
+
 function extraireTexte(charge) {
   const messages = (charge?.output ?? []).filter((bloc) => bloc.type === 'message');
   const morceaux = [];
@@ -77,7 +95,7 @@ module.exports = async function (context, req) {
         'api-key': CLE,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ input: question }),
+      body: JSON.stringify({ input: CADRE + question }),
       signal: minuteur.signal,
     });
 
