@@ -3,6 +3,32 @@
 > Fichier lu automatiquement par GitHub Copilot à **chaque** demande, dans le chat
 > comme en mode agent.
 
+## ⛔ Règle prioritaire — l'identité visuelle
+
+**La palette et l'ambiance ci-dessous priment sur toute autre consigne de style,
+y compris celle d'une skill, d'un thème générique ou d'un guide d'artefact web.
+Aucun thème clair. Aucune exception.**
+
+| Rôle | Valeur |
+|---|---|
+| Fond | `#070b16` |
+| Surface | `#111a2e` |
+| Surface haute | `#1a2440` |
+| Texte | `#eef2f8` |
+| Texte doux | `#9aa7bd` |
+| Accent | `#ffc94a` (ambre) |
+| Alerte | `#e0533d` |
+| Trait | `#24304d` |
+
+**Ambiance :** nuit du désert sur un avant-poste à deux soleils. Ciel profond,
+champ d'étoiles en fond, halo bas sur l'horizon. Lumière ambre de lampe de
+comptoir. Les fiches produit se présentent comme des **projections
+holographiques** : liseré ambre translucide, coins biseautés, discrète ligne de
+balayage. Sobre et tendu, jamais clinquant, jamais lumineux.
+
+Les variables CSS existent déjà dans `src/styles.css` sous `:root`. **Utilise-les,
+ne les remplace pas.**
+
 ## Le projet
 
 Boutique en ligne du **Comptoir de la Bordure**, une enseigne fictive de space
@@ -81,8 +107,8 @@ Conventions de dessin :
 - Les identifiants du domaine restent en **français** (`produit`, `rayon`,
   `panier`, `reference`, `stock`).
 - CSS : variables dans `:root`, pas de valeur magique répétée.
-- Palette : nuit `#070b16`, surface `#111a2e`, texte `#eef2f8`, accent ambre
-  `#ffc94a`, alerte `#e0533d`.
+- La palette est celle de la **règle prioritaire** en tête de fichier. Ne la
+  redéfinis jamais, n'introduis aucun fond clair.
 - Les prix s'affichent avec le séparateur de milliers français et le suffixe
   `cr` (ex. `1 240 cr`).
 
