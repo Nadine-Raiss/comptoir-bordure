@@ -530,13 +530,14 @@ main {
 
 .source {
   flex: 1;
-  padding: 9px 12px;
+  min-width: 0;
+  padding: 9px 10px;
   border-radius: 6px;
   border: 1px solid var(--trait);
   background: transparent;
   color: var(--texte-doux);
   font: inherit;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease;
 }

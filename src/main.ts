@@ -30,8 +30,9 @@ el('heros-accroche').textContent = boutique.enseigne;
 el('heros-livraison').textContent =
   `Livraison offerte des ${formaterPrix(boutique.livraison_gratuite_des)} vers les quatre bases.`;
 el('conseil-intro').textContent =
-  `${assistant.nom}, ${assistant.role.toLowerCase()}, consulte l'inventaire en direct. ` +
-  `Basculez sur Expert Galaxy pour les questions d'histoire et de lieux.`;
+  `Trois sources, une seule interface. Le Quartier-Maitre interroge la base de ` +
+  `donnees Fabric, le Comptoir lit le catalogue local, Expert Galaxy repond sur ` +
+  `l'histoire de la Bordure.`;
 el('pied-nom').textContent = boutique.nom;
 el('pied-bases').textContent = boutique.bases_desservies.join(' · ');
 
@@ -199,7 +200,7 @@ document.querySelectorAll<HTMLButtonElement>('[data-source]').forEach((bouton) =
       autre.classList.toggle('source--active', actif);
       autre.setAttribute('aria-checked', String(actif));
     });
-    const source = choisirSource(bouton.dataset.source ?? 'comptoir');
+    const source = choisirSource(bouton.dataset.source ?? 'quartier');
     majAide();
     void ajouterMessage(`Vous parlez maintenant a : ${source.nom}.`, 'Comptoir');
   });
@@ -221,9 +222,11 @@ async function poser(): Promise<void> {
   const attente = document.createElement('p');
   attente.className = 'attente-reponse';
   attente.textContent =
-    source.nom === 'Expert Galaxy'
-      ? "L'archiviste consulte les archives…"
-      : 'Consultation de l\'inventaire…';
+    source.nom === 'Comptoir'
+      ? "Consultation de l'inventaire…"
+      : source.nom === 'Quartier-Maitre'
+        ? 'Le quartier-maitre interroge la base…'
+        : "L'archiviste consulte les archives…";
   journal.append(attente);
   journal.scrollTop = journal.scrollHeight;
 
