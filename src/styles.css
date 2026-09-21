@@ -44,11 +44,40 @@ h3 {
 
 /* --- fond --------------------------------------------------------- */
 
+/* Photographie du telescope James Webb, en fond lointain. Tres assombrie :
+   elle doit se deviner, pas concurrencer le contenu. */
+.fond-nebuleuse {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background-image: url("/images/nebuleuse.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.38;
+}
+
+/* Voile degrade : eclaircit le haut, noie le bas pour que le texte reste
+   lisible au videoprojecteur. */
+.fond-nebuleuse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 11, 22, 0.55) 0%,
+    rgba(7, 11, 22, 0.82) 45%,
+    rgba(7, 11, 22, 0.97) 100%
+  );
+}
+
 .fond-horizon {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
+  /* Discret : la scene dessinee complete la photo, elle ne doit pas
+     concurrencer les fiches produit qui defilent par-dessus. */
+  opacity: 0.4;
 }
 
 .fond-horizon svg {
@@ -118,12 +147,50 @@ main {
   font-size: 0.88rem;
 }
 
-.heros__scene svg {
-  width: 100%;
-  height: auto;
-  display: block;
+.heros__photo {
+  margin: 0;
+  position: relative;
   border-radius: var(--rayon);
-  border: 1px solid var(--trait);
+  overflow: hidden;
+  border: 1px solid rgba(255, 201, 74, 0.3);
+}
+
+.heros__photo img {
+  width: 100%;
+  height: clamp(220px, 30vw, 340px);
+  object-fit: cover;
+  display: block;
+  /* La photo est reelle : on la teinte franchement pour qu'elle appartienne a
+     la palette du comptoir au lieu de jurer avec elle. */
+  filter: saturate(0.55) contrast(1.16) brightness(0.6) sepia(0.45)
+    hue-rotate(-12deg);
+}
+
+/* Voile ambre : raccorde la photo au reste de la page. */
+.heros__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      180deg,
+      rgba(7, 11, 22, 0.1) 0%,
+      rgba(7, 11, 22, 0.55) 100%
+    ),
+    linear-gradient(90deg, rgba(255, 158, 60, 0.16), rgba(120, 60, 180, 0.12));
+  pointer-events: none;
+}
+
+.heros__photo figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--ambre);
+  background: linear-gradient(180deg, transparent, rgba(7, 11, 22, 0.92));
 }
 
 @media (min-width: 900px) {
@@ -394,13 +461,57 @@ main {
   max-width: 44ch;
 }
 
+.conseil__photo {
+  margin: 0 0 calc(var(--pas) * 2.5);
+  position: relative;
+  border-radius: var(--rayon);
+  overflow: hidden;
+  border: 1px solid rgba(255, 201, 74, 0.26);
+  max-width: 420px;
+}
+
+.conseil__photo img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  object-position: center 62%;
+  display: block;
+  filter: saturate(0.5) contrast(1.3) brightness(0.62) sepia(0.6)
+    hue-rotate(-14deg);
+}
+
+.conseil__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      180deg,
+      rgba(7, 11, 22, 0.08) 0%,
+      rgba(7, 11, 22, 0.6) 100%
+    ),
+    linear-gradient(90deg, rgba(255, 158, 60, 0.2), rgba(120, 60, 180, 0.1));
+  pointer-events: none;
+}
+
+.conseil__photo figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--ambre);
+  background: linear-gradient(180deg, transparent, rgba(7, 11, 22, 0.92));
+}
+
 .conseil__scene {
   color: var(--texte);
 }
 
 .conseil__scene svg {
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
   height: auto;
 }
 
@@ -567,6 +678,12 @@ main {
 
 .pied p {
   margin: 0;
+}
+
+.pied__credit {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  opacity: 0.75;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,7 +1,7 @@
 import donnees from '../catalogue.json';
 import type { Catalogue, Produit } from './types';
 import { horizonBordure } from './horizon';
-import { avantPoste, borneConseil, vignetteProduit } from './scenes';
+import { borneConseil, vignetteProduit } from './scenes';
 import { choisirSource, formaterPrix, repondre, sourceCourante } from './assistant';
 
 const catalogue = donnees as Catalogue;
@@ -15,7 +15,6 @@ const el = <T extends HTMLElement>(id: string): T =>
  * ------------------------------------------------------------------ */
 
 el('fond').innerHTML = horizonBordure();
-el('heros-scene').innerHTML = avantPoste();
 el('conseil-scene').innerHTML = borneConseil();
 
 /* ------------------------------------------------------------------ *

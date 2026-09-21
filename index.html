@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
+    <div class="fond-nebuleuse" aria-hidden="true"></div>
     <div class="fond-horizon" id="fond"></div>
 
     <header class="entete">
@@ -28,7 +29,16 @@
           <p id="heros-accroche"></p>
           <p class="heros__livraison" id="heros-livraison"></p>
         </div>
-        <div class="heros__scene" id="heros-scene"></div>
+        <figure class="heros__photo">
+          <img
+            src="./images/panorama.jpg"
+            alt="Panorama d'une plaine rocheuse sous un ciel pale"
+            loading="eager"
+            width="1920"
+            height="329"
+          />
+          <figcaption>Relais Tessara — releve du comptoir</figcaption>
+        </figure>
       </section>
 
       <section class="catalogue" aria-labelledby="titre-catalogue">
@@ -52,6 +62,16 @@
         <div class="conseil__presentation">
           <h2 id="titre-conseil">Demandez conseil</h2>
           <p id="conseil-intro"></p>
+          <figure class="conseil__photo">
+            <img
+              src="./images/coucher.jpg"
+              alt="Coucher de soleil sur une plaine desertique"
+              loading="lazy"
+              width="1024"
+              height="816"
+            />
+            <figcaption>Fin de cycle au comptoir</figcaption>
+          </figure>
           <div class="conseil__scene" id="conseil-scene"></div>
         </div>
 
@@ -89,6 +109,9 @@
 
     <footer class="pied">
       <p id="pied-nom"></p>
+      <p class="pied__credit">
+        Images : NASA / JPL-Caltech — domaine public
+      </p>
       <p id="pied-bases"></p>
     </footer>
 
