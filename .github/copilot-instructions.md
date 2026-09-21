@@ -26,6 +26,12 @@ comptoir. Les fiches produit se présentent comme des **projections
 holographiques** : liseré ambre translucide, coins biseautés, discrète ligne de
 balayage. Sobre et tendu, jamais clinquant, jamais lumineux.
 
+**La scène de fond existe déjà.** `src/horizon.ts` exporte `horizonBordure()`,
+qui renvoie un SVG original : deux soleils bas, dunes en couches, champ
+d'étoiles. **Appelle-la et pose-la en fond de page**, derrière tout le contenu,
+en `position: fixed`, `inset: 0`, `pointer-events: none`, `z-index: -1`.
+Ne la redessine pas, ne la remplace pas par une image.
+
 Les variables CSS existent déjà dans `src/styles.css` sous `:root`. **Utilise-les,
 ne les remplace pas.**
 

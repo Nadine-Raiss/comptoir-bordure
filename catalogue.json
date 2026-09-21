@@ -1,7 +1,8 @@
 {
   "boutique": {
     "nom": "Comptoir de la Bordure",
-    "baseline": "Livres et equipement pour les mondes eloignes",
+    "baseline": "Lames, ouvrages et reliques pour les mondes sans loi",
+    "enseigne": "Avant-poste de Tessara, sous les deux soleils",
     "devise": "credits",
     "symbole": "cr",
     "livraison_gratuite_des": 250,
@@ -11,17 +12,17 @@
     {
       "id": "ouvrages",
       "nom": "Ouvrages",
-      "description": "Recits, manuels de navigation et chroniques des mondes eloignes."
+      "description": "Chroniques, manuels de saut et recits de contrebande."
     },
     {
-      "id": "equipement",
-      "nom": "Equipement",
-      "description": "Materiel de terrain eprouve, revendu sous garantie du comptoir."
+      "id": "armement",
+      "nom": "Lames et armement",
+      "description": "Lames d'energie, cristaux focalisateurs et armes de poing."
     },
     {
-      "id": "insignes",
-      "nom": "Insignes et textile",
-      "description": "Marquages d'escadron, vetements de vol et pieces de collection."
+      "id": "reliques",
+      "nom": "Insignes et reliques",
+      "description": "Medaillons de l'Ordre, textile de vol et pieces de fouille."
     },
     {
       "id": "modeles",
@@ -31,8 +32,8 @@
   ],
   "produits": [
     {
-      "reference": "LIV-CN-1",
-      "titre": "Chroniques de la Bordure, volume I",
+      "reference": "LIV-OR-1",
+      "titre": "L'Ordre des Veilleurs, chronique d'une extinction",
       "rayon": "ouvrages",
       "auteur": "Vera Solheim",
       "prix": 32,
@@ -40,12 +41,12 @@
       "note": 4.6,
       "avis": 214,
       "format": "Relie, 420 pages",
-      "resume": "Trente ans de manoeuvres sur les routes oubliees, racontees par une officier de navigation qui les a toutes empruntees.",
+      "resume": "Comment un ordre de gardiens vieux de mille ans a disparu en une seule nuit. Reconstitue a partir des archives des quatre bases.",
       "etiquettes": ["recit", "best-seller"]
     },
     {
       "reference": "LIV-NA-4",
-      "titre": "Manuel de navigation en secteur non balise",
+      "titre": "Manuel de saut en secteur non balise",
       "rayon": "ouvrages",
       "auteur": "Commandant Ilan Reyes",
       "prix": 78,
@@ -53,12 +54,12 @@
       "note": 4.9,
       "avis": 87,
       "format": "Relie toile, 640 pages",
-      "resume": "La reference des ecoles de vol. Calcul de sauts, lecture de derives, procedures d'urgence.",
+      "resume": "La reference des ecoles de vol. Calcul de sauts a l'aveugle, lecture de derives, procedures d'urgence quand la carte ment.",
       "etiquettes": ["technique", "reference"]
     },
     {
       "reference": "LIV-AT-7",
-      "titre": "Atlas des mondes eloignes",
+      "titre": "Atlas des mondes de la Bordure",
       "rayon": "ouvrages",
       "auteur": "Collectif",
       "prix": 124,
@@ -66,117 +67,117 @@
       "note": 4.8,
       "avis": 53,
       "format": "Grand format, 210 planches",
-      "resume": "Deux cent dix planches cartographiees, annotees par les equipages qui les ont relevees.",
+      "resume": "Deux cent dix planches cartographiees, annotees par les equipages qui les ont relevees. Y compris les routes que personne n'avoue emprunter.",
       "etiquettes": ["cartographie", "edition limitee"]
     },
     {
-      "reference": "LIV-SU-2",
-      "titre": "Survivre a la decompression",
+      "reference": "LIV-CA-2",
+      "titre": "Petit traite de negociation en cantine",
       "rayon": "ouvrages",
-      "auteur": "Dr. Maren Oyelaran",
-      "prix": 24,
-      "stock": 93,
-      "note": 4.3,
-      "avis": 342,
-      "format": "Broche, 180 pages",
-      "resume": "Protocoles medicaux de terrain. Ecrit court, pense pour etre lu dans l'urgence.",
-      "etiquettes": ["medical", "terrain"]
+      "auteur": "Anonyme",
+      "prix": 19,
+      "stock": 134,
+      "note": 4.4,
+      "avis": 662,
+      "format": "Broche, 96 pages",
+      "resume": "Quarante situations, quarante facons d'en sortir sans degainer. Ecrit par quelqu'un qui a manifestement beaucoup pratique.",
+      "etiquettes": ["pratique", "best-seller"]
     },
     {
       "reference": "LIV-JO-9",
-      "titre": "Journal de bord du Relais Tessara",
+      "titre": "Journal de bord d'un contrebandier",
       "rayon": "ouvrages",
-      "auteur": "Anonyme",
+      "auteur": "Non signe",
       "prix": 45,
       "stock": 0,
       "note": 4.7,
       "avis": 128,
       "format": "Fac-simile relie",
-      "resume": "Reproduction integrale du registre tenu pendant les dix-huit mois d'isolement du relais.",
+      "resume": "Reproduction integrale du registre retrouve a bord d'un cargo abandonne au Relais Tessara. Personne n'a jamais identifie son auteur.",
       "etiquettes": ["archive", "rupture"]
     },
     {
-      "reference": "EQP-LA-3",
-      "titre": "Lampe de terrain a induction LA-3",
-      "rayon": "equipement",
-      "prix": 56,
-      "stock": 74,
-      "note": 4.4,
-      "avis": 401,
-      "format": "Autonomie 40 h",
-      "resume": "Pas de pile, pas de recharge. Deux minutes de manivelle pour six heures de lumiere.",
+      "reference": "ARM-LE-1",
+      "titre": "Lame d'energie d'entrainement LE-1",
+      "rayon": "armement",
+      "prix": 1450,
+      "stock": 3,
+      "note": 4.7,
+      "avis": 91,
+      "format": "Lame bridee, garde en alliage brosse",
+      "resume": "Puissance reduite au quart. La lame marque, elle ne tranche pas. Le modele des salles d'entrainement de l'Ordre.",
+      "etiquettes": ["entrainement", "stock bas"]
+    },
+    {
+      "reference": "ARM-LE-3",
+      "titre": "Lame d'energie de service LE-3",
+      "rayon": "armement",
+      "prix": 3800,
+      "stock": 3,
+      "note": 5.0,
+      "avis": 47,
+      "format": "Pleine puissance, cristal monte",
+      "resume": "La piece la plus vendue du comptoir en valeur. Montage a la demande, cristal focalisateur inclus. Vente encadree.",
+      "etiquettes": ["collection", "stock bas", "best-seller"]
+    },
+    {
+      "reference": "ARM-CR-5",
+      "titre": "Cristal focalisateur, taille brute",
+      "rayon": "armement",
+      "prix": 890,
+      "stock": 14,
+      "note": 4.8,
+      "avis": 66,
+      "format": "Taille brute, 4 a 6 g",
+      "resume": "Extrait des veines profondes de Base Cendre. La teinte varie d'une piece a l'autre : aucune n'est identique.",
+      "etiquettes": ["piece unique"]
+    },
+    {
+      "reference": "ARM-BL-220",
+      "titre": "Blaster lourd BL-220",
+      "rayon": "armement",
+      "prix": 640,
+      "stock": 27,
+      "note": 4.3,
+      "avis": 318,
+      "format": "Cellule 40 tirs, crosse repliable",
+      "resume": "Lourd, lent a recharger, et redoutablement fiable. Le choix des equipages qui ne peuvent compter sur personne.",
       "etiquettes": ["terrain"]
     },
     {
-      "reference": "EQP-KT-1",
-      "titre": "Kit de reparation de terrain KT-1",
-      "rayon": "equipement",
-      "prix": 620,
-      "stock": 15,
-      "note": 4.8,
-      "avis": 96,
-      "format": "Malette 34 pieces",
-      "resume": "Le kit reglementaire des equipages de maintenance. Trente-quatre pieces, aucune superflue.",
-      "etiquettes": ["professionnel"]
-    },
-    {
-      "reference": "EQP-BA-7",
-      "titre": "Balise de detresse BA-7",
-      "rayon": "equipement",
-      "prix": 380,
-      "stock": 5,
+      "reference": "REL-ME-2",
+      "titre": "Medaillon de l'Ordre des Veilleurs",
+      "rayon": "reliques",
+      "prix": 230,
+      "stock": 9,
       "note": 4.9,
-      "avis": 62,
-      "format": "Portee 12 unites astronomiques",
-      "resume": "Emission continue pendant neuf jours. Homologuee pour le vol en secteur non balise.",
-      "etiquettes": ["securite", "stock bas"]
+      "avis": 112,
+      "format": "Bronze ancien, 48 mm",
+      "resume": "Piece de fouille authentifiee, provenance Base Vigie. Porter ce medaillon en public reste mal vu dans certains secteurs.",
+      "etiquettes": ["relique", "stock bas"]
     },
     {
-      "reference": "EQP-GO-5",
-      "titre": "Gourde isotherme de vol GO-5",
-      "rayon": "equipement",
-      "prix": 38,
-      "stock": 156,
-      "note": 4.1,
-      "avis": 588,
-      "format": "750 ml",
-      "resume": "Tient la temperature douze heures. Accrochage compatible harnais standard.",
-      "etiquettes": ["quotidien"]
-    },
-    {
-      "reference": "INS-EC-2",
-      "titre": "Insigne d'escadron grave",
-      "rayon": "insignes",
-      "prix": 55,
-      "stock": 210,
-      "note": 4.5,
-      "avis": 733,
-      "format": "Laiton brosse, 60 mm",
-      "resume": "Grave a la demande aux couleurs de l'escadron. Comptez six jours de fabrication.",
-      "etiquettes": ["personnalisable"]
-    },
-    {
-      "reference": "INS-MA-7",
+      "reference": "REL-MA-7",
       "titre": "Manteau de vol renforce MA-7",
-      "rayon": "insignes",
+      "rayon": "reliques",
       "prix": 680,
       "stock": 23,
       "note": 4.7,
       "avis": 189,
       "format": "Tailles S a XXL",
-      "resume": "Coupe reglementaire, doublure thermique amovible. Le vetement le plus vendu du comptoir.",
+      "resume": "Coupe reglementaire, doublure thermique amovible, capuche haute. Le vetement le plus vendu du comptoir en volume.",
       "etiquettes": ["textile", "best-seller"]
     },
     {
-      "reference": "INS-EM-1",
+      "reference": "REL-EM-1",
       "titre": "Ecusson brode des quatre bases",
-      "rayon": "insignes",
+      "rayon": "reliques",
       "prix": 18,
       "stock": 340,
       "note": 4.2,
       "avis": 421,
       "format": "Thermocollant, 80 mm",
-      "resume": "Les quatre bases sur une seule piece. Le cadeau de fin de cycle le plus offert.",
+      "resume": "Les quatre bases sur une seule piece. Le cadeau de fin de cycle le plus offert entre equipages.",
       "etiquettes": ["collection"]
     },
     {
@@ -188,7 +189,7 @@
       "note": 4.6,
       "avis": 157,
       "format": "142 pieces, resine",
-      "resume": "Reproduction du chasseur d'interception standard. Notice de montage en francais.",
+      "resume": "Reproduction du chasseur d'interception standard, ailes en position d'attaque. Notice de montage en francais.",
       "etiquettes": ["collection"]
     },
     {
@@ -212,18 +213,18 @@
       "note": 4.4,
       "avis": 71,
       "format": "900 x 600 mm, alliage grave",
-      "resume": "Les routes principales de la Bordure, gravees dans la masse. Fixation murale fournie.",
+      "resume": "Les routes principales de la Bordure, gravees dans la masse. Les routes de contrebande n'y figurent pas.",
       "etiquettes": ["decoration"]
     }
   ],
   "assistant": {
     "nom": "Vega",
-    "role": "Conseiller du comptoir",
-    "accueil": "Bonjour. Je connais le catalogue du comptoir. Que cherchez-vous ?",
+    "role": "Conseillere du comptoir",
+    "accueil": "Bonjour. Je tiens l'inventaire du comptoir depuis onze cycles. Que cherchez-vous ?",
     "suggestions": [
-      "Quels ouvrages pour apprendre la navigation ?",
+      "Une lame pour debuter l'entrainement ?",
       "Que conseillez-vous a moins de 100 credits ?",
-      "Qu'est-ce qui est en rupture de stock ?",
+      "Qu'est-ce qui est en rupture au comptoir ?",
       "Un cadeau pour un pilote en fin de cycle ?"
     ]
   }
