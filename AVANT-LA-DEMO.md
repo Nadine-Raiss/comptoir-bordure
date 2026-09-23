@@ -42,19 +42,33 @@ soirée pour corriger — c'est exactement pour ça qu'on le fait la veille.
 
 ## LE JOUR J
 
-### ⏰ T-15 min — le contrôle
+> 🔍 **Le contexte Azure dérive tout seul.** Ce matin, `az` pointait vers un
+> autre abonnement qu'hier — sans que personne n'y touche. Le script le détecte
+> et s'arrête, mais tu perds du temps. Le réflexe, avant tout :
+>
+> ```powershell
+> az account show --query name -o tsv     # doit afficher : The Mordor
+> ```
+>
+> Si ce n'est pas le bon :
+> ```powershell
+> az account set --subscription 564ee3d9-8b49-4ccb-a51c-16b240dfa94f
+> ```
+
+### ⏰ T-15 min — le contrôle *(7 minutes, chronométré)*
 
 ```powershell
 .\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
 ```
 
-Compte **8 minutes** : le dépôt du jeton coupe l'API ~5 min, puis le
-Quartier-Maître met 90 s à répondre.
+**Sept minutes, dont cinq d'attente imposée** : déposer le jeton redémarre la
+fonction serveur, elle met cinq minutes à revenir. Le script patiente tout seul,
+tu n'as rien à faire. Puis le Quartier-Maître répond en 95 s.
 
 > ⚠️ **Ne lance pas ce script dans les 10 minutes avant de monter.**
 > Il coupe l'API le temps du redémarrage.
 
-### ⏰ T-5 min — vérification sans risque
+### ⏰ T-5 min — vérification sans risque *(2 à 3 minutes)*
 
 ```powershell
 .\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -SansJeton
