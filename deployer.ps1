@@ -2,14 +2,14 @@
 #
 #   .\deployer.ps1                      -> deploie vers la SWA par defaut
 #   .\deployer.ps1 -Ouvrir              -> idem, puis ouvre le navigateur
-#   .\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+#   .\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 #                                       -> cible une autre SWA
 #
 # Le nom d'hote est lu depuis Azure : aucune URL en dur, le script suit la SWA.
 
 param(
-  [string]$Nom = 'portail-repetition',
-  [string]$Rg  = 'RG-REPETITION',
+  [string]$Nom = 'portail-resistance',
+  [string]$Rg  = 'RG-AI-DEMO',
   [switch]$Ouvrir
 )
 
@@ -42,7 +42,7 @@ try {
 
   $argsSwa = @('deploy', '.\dist', '--env', 'production', '--no-use-keychain')
   if (Test-Path .\api) {
-    # La fonction /api/conseil detient la cle Foundry : elle DOIT partir avec le
+    # La fonction /api/conseil detient le secret Foundry : elle DOIT partir avec le
     # site. Sans ce flag, le deploiement remplace le site sans l'API et toutes
     # les routes /api repondent 500 "Backend call failure".
     $argsSwa += @('--api-location', '.\api')
@@ -72,7 +72,8 @@ try {
     }
     Write-Host ""
     if ($sonde) {
-      Write-Host "     api    : OK (node $($sonde.node), cle $(if ($sonde.cle_presente) {'presente'} else {'ABSENTE'}))" -ForegroundColor Green
+      $auth = if ($sonde.jeton_present) { 'jeton' } elseif ($sonde.cle_presente) { 'cle' } else { 'absente' }
+      Write-Host "     api    : OK (node $($sonde.node), auth $auth)" -ForegroundColor Green
     } else {
       Write-Host "     api    : ECHEC apres 2 min - /api/ping ne repond pas." -ForegroundColor Red
       Write-Host "              Le site est en ligne mais Expert Galaxy ne marchera pas." -ForegroundColor Red

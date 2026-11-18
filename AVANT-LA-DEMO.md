@@ -19,7 +19,7 @@ az login          # tenant PHILPDEMO / « The Mordor »
 Puis le contrôle complet :
 
 ```powershell
-.\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+.\avant-scene.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 ```
 
 **Tu dois voir `TOUT EST PRÊT` et 6 lignes vertes.** Si non, tu as toute la
@@ -58,7 +58,7 @@ soirée pour corriger — c'est exactement pour ça qu'on le fait la veille.
 ### ⏰ T-15 min — le contrôle *(7 minutes, chronométré)*
 
 ```powershell
-.\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+.\avant-scene.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 ```
 
 **Sept minutes, dont cinq d'attente imposée** : déposer le jeton redémarre la
@@ -71,7 +71,7 @@ tu n'as rien à faire. Puis le Quartier-Maître répond en 95 s.
 ### ⏰ T-5 min — vérification sans risque *(2 à 3 minutes)*
 
 ```powershell
-.\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -SansJeton
+.\avant-scene.ps1 -Nom portail-resistance -Rg RG-AI-DEMO -SansJeton
 ```
 
 Celui-là **ne touche à rien**. Il contrôle seulement.
@@ -87,22 +87,31 @@ Celui-là **ne touche à rien**. Il contrôle seulement.
 
 ## SUR SCÈNE
 
-### Le prompt
+### Les prompts
 
 ```
-Crée une boutique web moderne inspirée d'un univers galactique permettant de
-parcourir les livres et produits dérivés du catalogue. Ajoute une zone
-permettant de converser avec un assistant qui conseille à partir de ce catalogue.
+Construis le catalogue galactique complet (filtres + recherche + cartes), dans site uniquement, sans agents
+```
 
-Une seule page, pleine largeur. Fais d'abord ce qui se voit.
+Puis :
+
+```
+Garde le catalogue intact, puis ajoute les 2 chats agents (conseil + quartier-maitre avec polling).
 ```
 
 ≈ 2 minutes. Puis **`Keep`**.
 
+### Questions à poser sur scène
+
+```
+Combien de produits vendus ?
+Qui est Blaze Mablus?
+```
+
 ### La mise en ligne
 
 ```powershell
-.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -Ouvrir
+.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO -Ouvrir
 ```
 
 ≈ 40 secondes.
@@ -113,8 +122,8 @@ Une seule page, pleine largeur. Fais d'abord ce qui se voit.
 
 | Ce qui arrive | Ce que tu tapes |
 |---|---|
-| **Copilot cale ou produit du n'importe quoi** | `git checkout secours` puis `.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -Ouvrir` |
-| **« Le jeton d'accès à Fabric a expiré »** | `.\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP` — mais c'est 8 min, **mieux vaut enchaîner sur Expert Galaxy** |
+| **Copilot cale ou produit du n'importe quoi** | `git checkout secours` puis `.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO -Ouvrir` |
+| **« Le jeton d'accès à Fabric a expiré »** | `.\avant-scene.ps1 -Nom portail-resistance -Rg RG-AI-DEMO` — mais c'est 8 min, **mieux vaut enchaîner sur Expert Galaxy** |
 | **Le Quartier-Maître ne répond pas** | Repose la question. Sinon : *« je vous le montre dans Fabric »* |
 | **Expert Galaxy répond à côté** | *« il a cherché sur le web. C'est exactement le problème dont on parle. »* |
 | **Le build échoue** | *« le type-check a bloqué la mise en ligne. C'est ce qu'on lui a demandé de faire. »* |

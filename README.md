@@ -51,7 +51,7 @@ code .
 ### Vérifier que le déploiement passe
 
 ```powershell
-.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 ```
 
 Doit finir sur `HTTP 200`. **À faire une fois la veille**, pas le jour même.
@@ -69,22 +69,31 @@ Doit finir sur `HTTP 200`. **À faire une fois la veille**, pas le jour même.
 
 ## La séquence
 
-### 1. Le prompt *(~2 min)*
+### 1. Les prompts Copilot *(~2 min)*
 
 ```
-Crée une boutique web moderne inspirée d'un univers galactique permettant de
-parcourir les livres et produits dérivés du catalogue. Ajoute une zone
-permettant de converser avec un assistant qui conseille à partir de ce catalogue.
+Construis le catalogue galactique complet (filtres + recherche + cartes), dans site uniquement, sans agents
+```
 
-Une seule page, pleine largeur. Fais d'abord ce qui se voit.
+Puis :
+
+```
+Garde le catalogue intact, puis ajoute les 2 chats agents (conseil + quartier-maitre avec polling).
 ```
 
 Puis **`Keep`** pour valider les fichiers.
 
+### 1 bis. Questions de démo
+
+```
+Combien de produits vendus ?
+Qui est Blaze Mablus?
+```
+
 ### 2. La mise en ligne *(~40 s)*
 
 ```powershell
-.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -Ouvrir
+.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO -Ouvrir
 ```
 
 Le script lit le nom d'hôte depuis Azure : aucune URL en dur.
@@ -97,7 +106,7 @@ Si Copilot cale ou produit quelque chose d'inutilisable :
 
 ```powershell
 git checkout secours
-.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP -Ouvrir
+.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO -Ouvrir
 ```
 
 La branche **`secours`** contient une version complète déjà générée et testée.
@@ -114,7 +123,7 @@ Deux commandes, quarante secondes.
 git checkout main
 git reset --hard
 git clean -fd src
-.\deployer.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+.\deployer.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 ```
 
 Le site réaffiche « Ouverture prochaine ». Répétable autant de fois que voulu.
