@@ -2,7 +2,7 @@
 #
 #   .\avant-scene.ps1                  -> depose le jeton, attend, verifie tout
 #   .\avant-scene.ps1 -SansJeton       -> verifie seulement, sans toucher au jeton
-#   .\avant-scene.ps1 -Nom portail-resistance -Rg RG-DEMO-PP
+#   .\avant-scene.ps1 -Nom portail-resistance -Rg RG-AI-DEMO
 #
 # A LANCER AU MOINS 10 MINUTES AVANT DE MONTER.
 #
@@ -12,8 +12,8 @@
 # C'est mesure, pas estime.
 
 param(
-  [string]$Nom = 'portail-repetition',
-  [string]$Rg  = 'RG-REPETITION',
+  [string]$Nom = 'portail-resistance',
+  [string]$Rg  = 'RG-AI-DEMO',
   [switch]$SansJeton
 )
 
@@ -121,7 +121,9 @@ if (-not $sonde) {
   Mauvais "/api/ping ne repond pas" ".\deployer.ps1 -Nom $Nom -Rg $Rg, puis relancer ce script"
 } else {
   Bon "en ligne (node $($sonde.node))"
-  if (-not $sonde.cle_presente) { Mauvais "FOUNDRY_KEY absente" "voir le README" }
+  if (-not $sonde.cle_presente -and -not $sonde.jeton_present) {
+    Mauvais "secret Foundry absent (FOUNDRY_KEY ou FOUNDRY_TOKEN)" "relancer .\\rafraichir-jeton-expert-galaxy.ps1"
+  }
 }
 
 # --- 5. Expert Galaxy ------------------------------------------------------
@@ -132,7 +134,7 @@ try {
   $chrono.Stop()
   Bon "repond en $([math]::Round($chrono.Elapsed.TotalSeconds,1)) s (version $($r.version))"
 } catch {
-  Mauvais "ne repond pas" "verifier FOUNDRY_KEY dans les parametres de la SWA"
+  Mauvais "ne repond pas" "relancer .\\rafraichir-jeton-expert-galaxy.ps1 (jeton Foundry), puis reessayer"
 }
 
 # --- 6. Quartier-Maitre ----------------------------------------------------
